@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  # only single instance supported
+  mariadb:
+    image: dpms/mariadb2
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    environment:
+      MYSQL_ROOT_PASSWORD: passw0rd
+      #MYSQL_DATABASE: DPMS
+      MYSQL_USER: dpms_write
+      MYSQL_PASSWORD: dpms_write
+    volumes:
+      - /tmp/database:/var/lib/mysql
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 10.6.65.158

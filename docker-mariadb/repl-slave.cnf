@@ -1,0 +1,4 @@
+[mysqld]
+relay-log=mysql-relay
+log-slave-updates=1
+read-only=1

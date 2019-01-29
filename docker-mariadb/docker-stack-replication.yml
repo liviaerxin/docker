@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  # only single instance supported
+  mariadb-master:
+    image: dpms/mariadb2
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    environment:
+      MYSQL_ROOT_PASSWORD: passw0rd
+      #MYSQL_DATABASE: DPMS
+      MYSQL_USER: dpms_write
+      MYSQL_PASSWORD: dpms_write
+      REPLICATION_MODE: master
+      REPLICATION_USER: repl_user
+      REPLICATION_PASSWORD: repl_password
+    volumes:
+      - /tmp/database-master:/var/lib/mysql
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 10.6.65.158
+
+  mariadb-slave:
+    image: dpms/mariadb2
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    environment:
+      MYSQL_ROOT_PASSWORD: passw0rd
+      #MYSQL_DATABASE: DPMS
+      MYSQL_USER: dpms_write
+      MYSQL_PASSWORD: dpms_write
+      MASTER_HOST: mariadb-master
+      #MASTER_PORT: 3306
+      REPLICATION_MODE: slave
+      REPLICATION_USER: repl_user
+      REPLICATION_PASSWORD: repl_password
+      #REPLICATION_ID: "{{.Task.Slot}}"
+    volumes:
+      - /tmp/database-slave:/var/lib/mysql
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 10.6.65.158

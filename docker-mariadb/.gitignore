@@ -1,0 +1,4 @@
+# exclude libs
+initdb.d/*
+# exception to the rule
+!initdb.d/.gitkeep

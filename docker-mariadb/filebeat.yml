@@ -1,0 +1,23 @@
+filebeat.prospectors:
+
+- input_type: log
+  paths:
+    - /var/log/supervisor/supervisord.log
+  fields:
+    type: supervisord
+  fields_under_root: true
+  tags:
+    - mysql
+
+- input_type: log
+  paths:
+    - /var/log/mysql.err
+    - /var/log/mysql.log
+  fields:
+    type: mysql
+  fields_under_root: true
+  tags:
+    - mysql
+
+output.logstash:
+  hosts: ["logstash:5044"]
